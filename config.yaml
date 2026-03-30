@@ -1,0 +1,111 @@
+units:
+  # MX spacing
+  kx: 19.05
+  ky: 19.05
+  # Padding for board outline
+  px: kx + 4
+  py: ky + 4
+
+points:
+  key:
+    spread: kx
+    padding: ky
+    tags:
+      key: true
+
+  zones:
+    # Main 5x3 matrix - Voyager stagger
+    matrix:
+      anchor:
+        shift: [100, -200]
+      columns:
+        pinky:
+          key.column_net: P0
+        ring:
+          key.stagger: 0.25 ky
+          key.column_net: P1
+        middle:
+          key.stagger: 0.25 ky - 1.34
+          key.column_net: P2
+        index:
+          key.stagger: -0.25 ky - 2.46
+          key.column_net: P3
+        inner:
+          key.stagger: -0.25 ky
+          key.column_net: P4
+      rows:
+        bottom:
+          key.row_net: P5
+        home:
+          key.row_net: P6
+        top:
+          key.row_net: P7
+
+    # Totem-style side key (outer pinky)
+    side:
+      anchor:
+        ref: matrix_pinky_home
+        shift: [-kx, 0]
+      columns:
+        outer:
+          key.column_net: P8
+      rows:
+        default:
+          key.row_net: P9
+      key.tags:
+        key: true
+        side: true
+
+    # Thumb cluster - 2 keys, based on Southerly/Voyager layout
+    # Measured: 22mm stem-to-stem inner bottom → near thumb
+    # 20mm stem-to-stem between thumb keys, 6mm vertical drop
+    # Southerly uses -30° rotation
+    thumb:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [3, -kx - 4]
+        rotate: -30
+      columns:
+        near:
+          key.column_net: P10
+        far:
+          key.spread: 20
+          key.stagger: -6
+          key.column_net: P11
+      rows:
+        thumb:
+          key.row_net: P12
+      key.tags:
+        key: true
+        thumb: true
+
+outlines:
+  # Key switch cutouts (MX plate cutout = 14mm)
+  _keys:
+    - what: rectangle
+      where: key
+      size: [14, 14]
+
+  # Keycap outlines (1u MX keycap ~18mm)
+  _caps:
+    - what: rectangle
+      where: key
+      size: [18, 18]
+
+  # Keycaps only
+  preview_caps:
+    - what: outline
+      name: _caps
+
+  # Switches only
+  preview_switches:
+    - what: outline
+      name: _keys
+
+  # Both layers combined
+  preview:
+    - what: outline
+      name: _caps
+    - what: outline
+      name: _keys
+      operation: stack
