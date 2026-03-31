@@ -35,31 +35,31 @@ points:
           key.column_net: P4
       rows:
         bottom:
-          key.row_net: P5
-        home:
           key.row_net: P6
-        top:
+        home:
           key.row_net: P7
+        top:
+          key.row_net: P8
 
     # Totem-style side key (outer pinky)
+    # Shares col 5 (P5) with thumb keys, uses row 2 (P8)
     side:
       anchor:
         ref: matrix_pinky_home
         shift: [-kx, 0]
       columns:
         outer:
-          key.column_net: P8
+          key.column_net: P5
       rows:
         default:
-          key.row_net: P9
+          key.row_net: P8
       key.tags:
         key: true
         side: true
 
     # Thumb cluster - 2 keys, based on Southerly/Voyager layout
-    # Measured: 22mm stem-to-stem inner bottom → near thumb
-    # 20mm stem-to-stem between thumb keys, 6mm vertical drop
-    # Southerly uses -30° rotation
+    # Shares col 5 (P5) with side key
+    # near = row 0 (P6), far = row 1 (P7)
     thumb:
       anchor:
         ref: matrix_inner_bottom
@@ -67,14 +67,16 @@ points:
         rotate: -30
       columns:
         near:
-          key.column_net: P10
+          key.column_net: P5
+          key.row_net: P6
         far:
           key.spread: 20
           key.stagger: -6
-          key.column_net: P11
+          key.width: 1.5 kx
+          key.column_net: P5
+          key.row_net: P7
       rows:
         thumb:
-          key.row_net: P12
       key.tags:
         key: true
         thumb: true
@@ -86,11 +88,15 @@ outlines:
       where: key
       size: [14, 14]
 
-  # Keycap outlines (1u MX keycap ~18mm)
+  # Keycap outlines
   _caps:
     - what: rectangle
       where: key
       size: [18, 18]
+    - what: rectangle
+      where: /^thumb_far/
+      size: [18, 1.5 ky - 1]
+      operation: stack
 
   # Keycaps only
   preview_caps:
@@ -109,3 +115,126 @@ outlines:
     - what: outline
       name: _keys
       operation: stack
+  raw:
+  - what: rectangle
+    where: true
+    size: [px, py]
+  board:
+  - what: polygon
+    operation: stack
+    fillet: 2
+    points:
+      # All points relative to matrix_pinky_bottom (100, -200)
+      # Key positions: side(80.95,-180.95) pinky_top(100,-161.9)
+      #   middle_top(157.2,-153.71) inner_top(195.2,-165.7)
+      #   inner_bottom(195.2,-203.8) pinky_bottom(100,-200)
+      #   thumb_near(198.2,-226.85,r-30) thumb_far(212.6,-242.05,r-30)
+      #
+      # Padding: 12mm from key centers (~half key + 3mm)
+      #
+      # 1. Top-left
+      - ref: matrix_pinky_bottom
+        shift: [-31, 59]
+      # 2. Top-right (same Y as top-left for flat top)
+      - ref: matrix_pinky_bottom
+        shift: [90, 59]
+      # 3. Right side down to inner bottom
+      - ref: matrix_pinky_bottom
+        shift: [90, -16]
+      # 4. Into thumb - right side of near thumb
+      - ref: thumb_near_thumb
+        shift: [6, 12]
+      # 5. Right side of far thumb (extra padding for 1.5u height)
+      - ref: thumb_far_thumb
+        shift: [12, 17]
+      # 6. Bottom of far thumb
+      - ref: thumb_far_thumb
+        shift: [12, -17]
+      # 7. Left of far thumb
+      - ref: thumb_far_thumb
+        shift: [-12, -17]
+      - ref: thumb_far_thumb
+        shift: [-12, -6]
+      # 8. Left of near thumb
+      - ref: thumb_near_thumb
+        shift: [-12, -12]
+      # 9. Bottom-right of main body
+      - ref: matrix_pinky_bottom
+        shift: [60, -16]
+      # 10. Bottom-left
+      - ref: matrix_pinky_bottom
+        shift: [-31, -16]
+  combo:
+    - name: board
+    - operation: subtract
+      name: preview_caps
+
+pcbs:
+  defiant:
+    template: kicad8
+    outlines: {}
+    footprints:
+      # Choc hotswap switches at every key position
+      choc_hotswap:
+        what: ceoloide/switch_choc_v1_v2
+        where: key
+        params:
+          hotswap: true
+          reversible: false
+          keycap_width: 18
+          keycap_height: 18
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180
+
+      # Diodes for switch matrix
+      diode:
+        what: ceoloide/diode_tht_sod123
+        where: key
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -9]
+          rotate: 180
+
+      # XIAO nRF52840 MCU - upper left, USB-C facing top edge
+      mcu:
+        what: ImStuBTW/xiao-ble
+        where:
+          ref: side_outer
+          shift: [0, kx + 5]
+          rotate: 180
+
+      # Battery connector (JST PH 2.0) - left side below XIAO
+      battery:
+        what: ceoloide/battery_connector_jst_ph_2
+        where:
+          ref: side_outer
+          shift: [-5, -10]
+          rotate: 90
+        params:
+          reversible: false
+
+      # Power switch - near XIAO, top left, rotated horizontal
+      power:
+        what: ceoloide/power_switch_smd_side
+        where:
+          ref: matrix_pinky_top
+          shift: [-kx / 2, 12]
+          rotate: 90
+        params:
+          from: BAT_P
+          to: RAW
+
+      # Reset button - near XIAO, top left
+      reset:
+        what: ceoloide/reset_switch_smd_side
+        where:
+          ref: matrix_pinky_top
+          shift: [kx / 2, 12]
+          rotate: 0
+        params:
+          from: GND
+          to: RST
