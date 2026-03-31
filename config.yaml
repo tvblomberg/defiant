@@ -132,15 +132,15 @@ outlines:
       #
       # Padding: 12mm from key centers (~half key + 3mm)
       #
-      # 1. Top-left
+      # 1. Top-left (3mm from keycap edges)
       - ref: matrix_pinky_bottom
-        shift: [-31, 59]
-      # 2. Top-right (same Y as top-left for flat top)
+        shift: [-31, 58.3]
+      # 2. Top-right
       - ref: matrix_pinky_bottom
-        shift: [90, 59]
+        shift: [88, 58.3]
       # 3. Right side down to inner bottom
       - ref: matrix_pinky_bottom
-        shift: [90, -16]
+        shift: [88, -17.8]
       # 4. Into thumb - right side of near thumb
       - ref: thumb_near_thumb
         shift: [6, 12]
@@ -158,16 +158,20 @@ outlines:
       # 8. Left of near thumb
       - ref: thumb_near_thumb
         shift: [-12, -12]
-      # 9. Bottom-right of main body
+      # 9. Bottom-right of main body (3mm from keycap edges)
       - ref: matrix_pinky_bottom
-        shift: [60, -16]
+        shift: [56, -12]
       # 10. Bottom-left
       - ref: matrix_pinky_bottom
-        shift: [-31, -16]
+        shift: [-31, -12]
   combo:
     - name: board
     - operation: subtract
       name: preview_caps
+  plate:
+    - name: board
+    - operation: subtract
+      name: _keys
 
 pcbs:
   defiant:
