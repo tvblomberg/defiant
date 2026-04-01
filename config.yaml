@@ -176,7 +176,10 @@ outlines:
 pcbs:
   defiant:
     template: kicad8
-    outlines: {}
+    outlines:
+      main:
+        outline: board
+        layer: Edge.Cuts
     footprints:
       # Choc hotswap switches at every key position
       choc_hotswap:
@@ -208,15 +211,15 @@ pcbs:
         what: ImStuBTW/xiao-ble
         where:
           ref: side_outer
-          shift: [0, kx + 5]
-          rotate: 180
+          shift: [0, 29]
+          rotate: 90
 
       # Battery connector (JST PH 2.0) - left side below XIAO
       battery:
         what: ceoloide/battery_connector_jst_ph_2
         where:
           ref: side_outer
-          shift: [-5, -10]
+          shift: [-7, -0.8 ky]
           rotate: 90
         params:
           reversible: false
@@ -225,20 +228,79 @@ pcbs:
       power:
         what: ceoloide/power_switch_smd_side
         where:
-          ref: matrix_pinky_top
-          shift: [-kx / 2, 12]
+          ref: matrix_index_top
+          shift: [0 + 12, ky - 2]
           rotate: 90
         params:
           from: BAT_P
-          to: RAW
+          to: BAT_POS
 
       # Reset button - near XIAO, top left
       reset:
         what: ceoloide/reset_switch_smd_side
         where:
-          ref: matrix_pinky_top
-          shift: [kx / 2, 12]
+          ref: matrix_index_top
+          shift: [0, ky - 2]
           rotate: 0
         params:
           from: GND
           to: RST
+
+      # Silkscreen text
+      board_name:
+        what: ceoloide/utility_text
+        where:
+          ref: matrix_middle_top
+          shift: [-0.5 kx, 0.4 ky]
+        params:
+          text: "Defiant v1.0"
+          height: 2
+          width: 2
+          thickness: 0.3
+          side: F
+
+      # Ground fill on both sides
+      ground_fill:
+        what: ceoloide/utility_filled_zone
+        where:
+          ref: matrix_middle_home
+        params:
+          side: "F&B"
+          net: GND
+
+      # Mounting holes (M2)
+      mount_top_left:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_pinky_top
+          shift: [0, ky - 3]
+
+      mount_top_right:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_inner_top
+          shift: [.3 kx, ky]
+
+      mount_bottom_left:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_pinky_bottom
+          shift: [1.6 kx, -0.3 ky]
+
+      mount_bottom_right:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_inner_bottom
+          shift: [0.3 kx, -0.7 ky]
+
+      mount_side:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: side_outer
+          shift: [-6, -1.3 ky]
+
+      mount_thumb:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: thumb_far_thumb
+          shift: [ 0.4 kx, -0.7 ky]
