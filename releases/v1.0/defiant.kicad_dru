@@ -1,0 +1,8 @@
+(version 1)
+(rule "XIAO Edge Cuts"
+	# Ignore known issue
+       (condition "A.Reference == 'MCU1'")
+        (constraint edge_clearance (min 0mm)))
+(rule "XIAO Edge Cuts2"
+       (condition "A.Reference == 'MCU1'")
+        (constraint edge_clearance (min 0mm)))
