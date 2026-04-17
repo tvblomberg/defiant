@@ -1,8 +1,8 @@
 include:
-  - board: nice_nano_v2
+  - board: nice_nano/nrf52840/zmk
     shield: defiant_left
     snippet: studio-rpc-usb-uart
-  - board: nice_nano_v2
+  - board: nice_nano/nrf52840/zmk
     shield: defiant_right
-  - board: nice_nano_v2
+  - board: nice_nano/nrf52840/zmk
     shield: settings_reset
