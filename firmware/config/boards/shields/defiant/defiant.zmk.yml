@@ -1,0 +1,12 @@
+file_format: "1"
+id: defiant
+name: Defiant
+type: shield
+url: https://github.com/invincent/defiant
+requires: [pro_micro]
+features:
+  - keys
+  - studio
+siblings:
+  - defiant_left
+  - defiant_right

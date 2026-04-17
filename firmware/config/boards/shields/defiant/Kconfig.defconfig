@@ -1,0 +1,23 @@
+if SHIELD_DEFIANT_LEFT
+
+config ZMK_KEYBOARD_NAME
+    default "Defiant"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif
+
+if SHIELD_DEFIANT_RIGHT
+
+config ZMK_KEYBOARD_NAME
+    default "Defiant Right"
+
+endif
+
+if SHIELD_DEFIANT_LEFT || SHIELD_DEFIANT_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+endif

@@ -38,11 +38,11 @@ points:
           key.column_net: P4
       rows:
         bottom:
-          key.row_net: P19
+          row_net: P19
         home:
-          key.row_net: P20
+          row_net: P20
         top:
-          key.row_net: P21
+          row_net: P21
 
     # Totem-style side key (outer pinky)
     # Shares column P0 with pinky, uses dedicated row P9
@@ -56,7 +56,7 @@ points:
           key.column_net: P0
       rows:
         default:
-          key.row_net: P9
+          row_net: P9
       key.tags:
         key: true
         side: true
@@ -79,7 +79,7 @@ points:
           key.column_net: P4
       rows:
         thumb:
-          key.row_net: P10
+          row_net: P10
       key.tags:
         key: true
         thumb: true
@@ -262,7 +262,7 @@ pcbs:
           ref: matrix_inner_top
           shift: [-0.5 kx, ky - 3]
         params:
-          text: "Defiant v1.0 By Invincent"
+          text: "Defiant v1.1 By Invincent"
           height: 2
           width: 2
           thickness: 0.3
