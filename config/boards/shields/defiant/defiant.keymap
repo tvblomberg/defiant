@@ -33,29 +33,6 @@
 &mmv_input_listener { input-processors = <&zip_xy_scaler 4 1>; };
 
 / {
-    macros {
-        m_q_tap: m_q_tap {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp Q>;
-        };
-        m_q_lock: m_q_lock {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LG(LS(Q))>;
-        };
-        m_p_tap: m_p_tap {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp P>;
-        };
-        m_p_proj: m_p_proj {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp LG(P)>;
-        };
-    };
-
     behaviors {
         // urob-style "timeless" home row mod — left-hand keys, triggered by RIGHT-hand key positions
         hml: home_row_mod_left {
@@ -83,25 +60,15 @@
             bindings = <&kp>, <&kp>;
         };
 
-        // Q key: tap = Q, hold = LGUI+LSHIFT+Q (lock/quit shortcut)
-        // tap-preferred so shift+Q still produces a capital Q.
-        q_morph: q_hold_tap {
+        // Generic tap-preferred hold-tap; used for Q (hold = lock) and P (hold = projector).
+        // tap-preferred so shift+key still produces a capital letter.
+        qp_ht: qp_hold_tap {
             compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <0>;
+            #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <250>;
             quick-tap-ms = <150>;
-            bindings = <&m_q_lock>, <&m_q_tap>;
-        };
-
-        // P key: tap = P, hold = LGUI+P (projector menu)
-        p_morph: p_hold_tap {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <0>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <250>;
-            quick-tap-ms = <150>;
-            bindings = <&m_p_proj>, <&m_p_tap>;
+            bindings = <&kp>, <&kp>;
         };
 
         // Tap dance: single tap = U, double tap = Ctrl+Z (undo)
@@ -155,7 +122,7 @@
             //   Row 4: L thm_near, L thm_far, R thm_far, R thm_near
             bindings = <
 // ╭─────────┬─────────┬─────────┬─────────┬─────────╮   ╭─────────┬─────────┬─────────┬─────────┬─────────╮
-   &q_morph    &kp W     &kp E     &kp R     &kp T         &kp Y     &td_u     &kp I     &kp O     &p_morph
+   &qp_ht LG(LS(Q)) Q  &kp W  &kp E  &kp R  &kp T       &kp Y  &td_u  &kp I  &kp O  &qp_ht LG(P) P
 // ├─────────┼─────────┼─────────┼─────────┼─────────┤   ├─────────┼─────────┼─────────┼─────────┼─────────┤
    &hml LGUI A &hml LALT S &hml LCTL D &hml LSFT F &kp G  &kp H     &hmr RSFT J &hmr RCTL K &hmr RALT L &hmr RGUI SEMI
 // ├─────────┼─────────┼─────────┼─────────┼─────────┤   ├─────────┼─────────┼─────────┼─────────┼─────────┤
