@@ -20,6 +20,16 @@
 // Thumb key positions
 #define THUMBS 32 33 34 35
 
+// Mouse tuning: scale up &mmv output and slow the ramp to match the Voyager QMK feel
+// (MOUSEKEY_INTERVAL 15 + MOUSEKEY_TIME_TO_MAX 50 ≈ 750ms to max speed).
+&mmv {
+    time-to-max-speed-ms = <500>;
+    acceleration-exponent = <1>;
+    delay-ms = <0>;
+};
+
+&mmv_input_listener { input-processors = <&zip_xy_scaler 3 1>; };
+
 / {
     behaviors {
         // urob-style "timeless" home row mod — left-hand keys, triggered by RIGHT-hand key positions
