@@ -1,10 +1,10 @@
 #include "defiant.dtsi"
 
 &kscan0 {
-    // Columns (outputs): P0 (pinky) → P4 (inner)
+    // P0 and P1 are swapped relative to Ergogen labels — PCB routes P1 to pinky, P0 to ring.
     col-gpios
-        = <&gpio0  6 GPIO_ACTIVE_HIGH>  // P0 - pinky column
-        , <&gpio0  8 GPIO_ACTIVE_HIGH>  // P1 - ring column
+        = <&gpio0  8 GPIO_ACTIVE_HIGH>  // P1 - pinky column
+        , <&gpio0  6 GPIO_ACTIVE_HIGH>  // P0 - ring column
         , <&gpio0 17 GPIO_ACTIVE_HIGH>  // P2 - middle column
         , <&gpio0 20 GPIO_ACTIVE_HIGH>  // P3 - index column + thumb_near
         , <&gpio0 22 GPIO_ACTIVE_HIGH>  // P4 - inner column + thumb_far

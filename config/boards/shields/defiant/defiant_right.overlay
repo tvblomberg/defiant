@@ -8,8 +8,8 @@
         = <&gpio0 22 GPIO_ACTIVE_HIGH>  // P4 → scan col 0 → logical col 5 (R inner + thumb_far)
         , <&gpio0 20 GPIO_ACTIVE_HIGH>  // P3 → scan col 1 → logical col 6 (R index + thumb_near)
         , <&gpio0 17 GPIO_ACTIVE_HIGH>  // P2 → scan col 2 → logical col 7 (R middle)
-        , <&gpio0  8 GPIO_ACTIVE_HIGH>  // P1 → scan col 3 → logical col 8 (R ring)
-        , <&gpio0  6 GPIO_ACTIVE_HIGH>  // P0 → scan col 4 → logical col 9 (R pinky + side)
+        , <&gpio0  6 GPIO_ACTIVE_HIGH>  // P0 → scan col 3 → logical col 8 (R ring)
+        , <&gpio0  8 GPIO_ACTIVE_HIGH>  // P1 → scan col 4 → logical col 9 (R pinky + side)
         ;
 };
 
