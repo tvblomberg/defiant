@@ -60,20 +60,25 @@
             bindings = <&kp>, <&kp>;
         };
 
-        // Q key: tap = Q, hold = LGUI+LSHIFT+Q (lock screen on some Linux DEs)
-        q_morph: q_morph {
-            compatible = "zmk,behavior-mod-morph";
+        // Q key: tap = Q, hold = LGUI+LSHIFT+Q (lock/quit shortcut)
+        // tap-preferred so shift+Q still produces a capital Q.
+        q_morph: q_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
             #binding-cells = <0>;
-            bindings = <&kp Q>, <&kp LG(LS(Q))>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <250>;
+            quick-tap-ms = <150>;
+            bindings = <&kp LG(LS(Q))>, <&kp Q>;
         };
 
-        // P key: tap = P, hold = LGUI+P (projector menu on Windows)
-        p_morph: p_morph {
-            compatible = "zmk,behavior-mod-morph";
+        // P key: tap = P, hold = LGUI+P (projector menu)
+        p_morph: p_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
             #binding-cells = <0>;
-            bindings = <&kp P>, <&kp LG(P)>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <250>;
+            quick-tap-ms = <150>;
+            bindings = <&kp LG(P)>, <&kp P>;
         };
 
         // Tap dance: single tap = U, double tap = Ctrl+Z (undo)
