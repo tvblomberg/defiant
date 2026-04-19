@@ -130,12 +130,14 @@
 
         mouse_layer {
             display-name = "Mouse";
+            // Right-hand: cursor movement on IJKL, PG_UP/DN above, clicks on thumbs.
+            // Left-hand: media controls. Left thumb-far = MCLK (middle click).
             bindings = <
-   &trans  &trans         &kp C_VOL_DN   &kp C_VOL_UP  &kp C_MUTE       &trans  &kp PG_UP      &mkp LCLK      &kp PG_DN     &trans
-   &trans  &kp C_PREV     &kp C_NEXT     &kp C_STOP    &kp C_PP         &kp HOME &mkp LCLK     &mkp MCLK      &mkp RCLK     &kp END
-   &trans  &trans         &trans         &trans        &trans           &trans  &kp LC(LS(TAB)) &trans        &kp LC(TAB)   &trans
-   &trans                                                                                                                   &trans
-                          &trans         &trans                         &mkp LCLK &mkp RCLK
+   &trans  &trans         &kp C_VOL_DN   &kp C_VOL_UP  &kp C_MUTE       &trans    &kp PG_UP       &mmv MOVE_UP    &kp PG_DN       &trans
+   &trans  &kp C_PREV     &kp C_NEXT     &kp C_STOP    &kp C_PP         &kp HOME  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT &kp END
+   &trans  &trans         &trans         &trans        &trans           &trans    &kp LC(LS(TAB)) &trans          &kp LC(TAB)     &trans
+   &trans                                                                                                                         &trans
+                          &trans         &mkp MCLK                      &mkp LCLK &mkp RCLK
             >;
         };
 
@@ -174,9 +176,9 @@
 
         mac_layer {
             display-name = "Macros";
-            // Workspace switchers: tap = number, hold = LG+number
+            // Top row: BLE profile select + output controls. Home row: workspace switchers (tap=N, hold=LG+N).
             bindings = <
-   &trans         &trans         &trans         &trans         &trans              &trans         &trans         &trans         &trans         &trans
+   &bt BT_CLR     &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2   &bt BT_SEL 3        &bt BT_SEL 4   &trans         &out OUT_USB   &out OUT_BLE   &out OUT_TOG
    &ws_ht LG(N1) N1  &ws_ht LG(N2) N2  &ws_ht LG(N3) N3  &ws_ht LG(N4) N4  &ws_ht LG(N5) N5   &ws_ht LG(N6) N6  &ws_ht LG(N7) N7  &ws_ht LG(N8) N8  &ws_ht LG(N9) N9  &ws_ht LG(N0) N0
    &trans         &trans         &trans         &trans         &trans              &trans         &trans         &trans         &trans         &trans
    &trans                                                                                                                                                        &trans
