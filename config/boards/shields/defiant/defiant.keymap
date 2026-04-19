@@ -33,6 +33,29 @@
 &mmv_input_listener { input-processors = <&zip_xy_scaler 4 1>; };
 
 / {
+    macros {
+        m_q_tap: m_q_tap {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp Q>;
+        };
+        m_q_lock: m_q_lock {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(LS(Q))>;
+        };
+        m_p_tap: m_p_tap {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp P>;
+        };
+        m_p_proj: m_p_proj {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(P)>;
+        };
+    };
+
     behaviors {
         // urob-style "timeless" home row mod — left-hand keys, triggered by RIGHT-hand key positions
         hml: home_row_mod_left {
@@ -68,7 +91,7 @@
             flavor = "tap-preferred";
             tapping-term-ms = <250>;
             quick-tap-ms = <150>;
-            bindings = <&kp LG(LS(Q))>, <&kp Q>;
+            bindings = <&m_q_lock>, <&m_q_tap>;
         };
 
         // P key: tap = P, hold = LGUI+P (projector menu)
@@ -78,7 +101,7 @@
             flavor = "tap-preferred";
             tapping-term-ms = <250>;
             quick-tap-ms = <150>;
-            bindings = <&kp LG(P)>, <&kp P>;
+            bindings = <&m_p_proj>, <&m_p_tap>;
         };
 
         // Tap dance: single tap = U, double tap = Ctrl+Z (undo)
