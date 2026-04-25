@@ -1,6 +1,6 @@
 [submodule "footprints/ceoloide"]
-	path = footprints/ceoloide
+	path = v1/footprints/ceoloide
 	url = https://github.com/ceoloide/ergogen-footprints.git
 [submodule "footprints/ImStuBTW"]
-	path = footprints/ImStuBTW
+	path = v1/footprints/ImStuBTW
 	url = https://github.com/ImStuBTW/ergogen-v4-footprints.git
