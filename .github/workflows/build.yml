@@ -3,5 +3,16 @@ name: Build
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build:
+  build-v1:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      config_path: v1/firmware/config
+      build_matrix_path: v1/firmware/build.yaml
+      archive_name: defiant-v1
+
+  build-v2:
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      config_path: v2/firmware/config
+      build_matrix_path: v2/firmware/build.yaml
+      archive_name: defiant-v2
