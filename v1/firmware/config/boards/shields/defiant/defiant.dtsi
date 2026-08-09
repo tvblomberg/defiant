@@ -10,6 +10,8 @@
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
+        wakeup-source;
+
         diode-direction = "col2row";
 
         // Rows (inputs, with pull-down): P21 (top), P20 (home), P19 (bottom), P9 (side), P10 (thumb)
