@@ -1,0 +1,356 @@
+units:
+  # MX spacing
+  kx: 19.05
+  ky: 19.05
+  # Padding for board outline
+  px: kx + 4
+  py: ky + 4
+
+points:
+  key:
+    spread: kx
+    padding: ky
+    tags:
+      key: true
+
+  zones:
+    # Main 5x3 matrix - Voyager stagger
+    # Columns P0-P4 (left side of nice!nano)
+    # Rows P19-P21, P10 (right side of nice!nano) for better routing
+    # R3 (P10) is used for side key and thumb keys
+    matrix:
+      anchor:
+        shift: [100, -200]
+      columns:
+        pinky:
+          key.column_net: P0
+        ring:
+          key.stagger: 0.25 ky
+          key.column_net: P1
+        middle:
+          key.stagger: 0.25 ky - 1.34
+          key.column_net: P2
+        index:
+          key.stagger: -0.25 ky - 2.46
+          key.column_net: P3
+        inner:
+          key.stagger: -0.25 ky
+          key.column_net: P4
+      rows:
+        bottom:
+          row_net: P19
+        home:
+          row_net: P20
+        top:
+          row_net: P21
+
+    # Totem-style side key (outer pinky)
+    # Shares column P0 with pinky, uses dedicated row P9
+    # (P9 is bottom-left of nice!nano, physically near the side key)
+    side:
+      anchor:
+        ref: matrix_pinky_home
+        shift: [-kx, 0]
+      columns:
+        outer:
+          key.column_net: P0
+      rows:
+        default:
+          row_net: P9
+      key.tags:
+        key: true
+        side: true
+
+    # Thumb cluster - 2 keys
+    # near shares column P3 (index), far shares column P4 (inner)
+    # Both use row P10 (R3)
+    thumb:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [3, -kx - 4]
+        rotate: -30
+      columns:
+        near:
+          key.column_net: P3
+        far:
+          key.spread: 20
+          key.stagger: -6
+          key.width: 1.5 kx
+          key.column_net: P4
+      rows:
+        thumb:
+          row_net: P10
+      key.tags:
+        key: true
+        thumb: true
+
+outlines:
+  # Key switch cutouts (MX plate cutout = 14mm)
+  _keys:
+    - what: rectangle
+      where: key
+      size: [14, 14]
+
+  # Keycap outlines
+  _caps:
+    - what: rectangle
+      where: key
+      size: [18, 18]
+    - what: rectangle
+      where: /^thumb_far/
+      size: [18, 1.5 ky - 1]
+      operation: stack
+
+  # Keycaps only
+  preview_caps:
+    - what: outline
+      name: _caps
+
+  # Switches only
+  preview_switches:
+    - what: outline
+      name: _keys
+
+  # Both layers combined
+  preview:
+    - what: outline
+      name: _caps
+    - what: outline
+      name: _keys
+      operation: stack
+  raw:
+  - what: rectangle
+    where: true
+    size: [px, py]
+  board:
+  - what: polygon
+    operation: stack
+    fillet: 2
+    points:
+      # All points relative to matrix_pinky_bottom (100, -200)
+      # Key positions: side(80.95,-180.95) pinky_top(100,-161.9)
+      #   middle_top(157.2,-153.71) inner_top(195.2,-165.7)
+      #   inner_bottom(195.2,-203.8) pinky_bottom(100,-200)
+      #   thumb_near(198.2,-226.85,r-30) thumb_far(212.6,-242.05,r-30)
+      #
+      # Padding: 12mm from key centers (~half key + 3mm)
+      #
+      # 1. Top-left (3mm from keycap edges)
+      - ref: matrix_pinky_bottom
+        shift: [-34, 66.5]
+      # 2. Top-right
+      - ref: matrix_pinky_bottom
+        shift: [88, 66.5]
+      # 3. Right side down to inner bottom
+      - ref: matrix_pinky_bottom
+        shift: [88, -17.8]
+      # 4. Into thumb - right side of near thumb
+      - ref: thumb_near_thumb
+        shift: [6, 12]
+      # 5. Right side of far thumb (extra padding for 1.5u height)
+      - ref: thumb_far_thumb
+        shift: [12, 17]
+      # 6. Bottom of far thumb
+      - ref: thumb_far_thumb
+        shift: [12, -17]
+      # 7. Left of far thumb
+      - ref: thumb_far_thumb
+        shift: [-12, -17]
+      - ref: thumb_far_thumb
+        shift: [-12, -6]
+      # 8. Left of near thumb
+      - ref: thumb_near_thumb
+        shift: [-12, -12]
+      # 9. Bottom-right of main body (3mm from keycap edges)
+      - ref: matrix_pinky_bottom
+        shift: [56, -15]
+      # 10. Bottom-left
+      - ref: matrix_pinky_bottom
+        shift: [-34, -15]
+  combo:
+    - name: board
+    - operation: subtract
+      name: preview_caps
+  plate:
+    - name: board
+    - operation: subtract
+      name: _keys
+
+pcbs:
+  defiant:
+    template: kicad8
+    outlines:
+      main:
+        outline: board
+        layer: Edge.Cuts
+    footprints:
+      # Choc hotswap switches at every key position
+      choc_hotswap:
+        what: ceoloide/switch_choc_v1_v2
+        where: key
+        params:
+          hotswap: true
+          reversible: true
+          keycap_width: 18
+          keycap_height: 18
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180
+
+      # Diodes for switch matrix
+      diode:
+        what: ceoloide/diode_tht_sod123
+        where: key
+        params:
+          reversible: true
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -9]
+          rotate: 180
+
+      # nice!nano MCU - upper left, USB-C facing top edge
+      mcu:
+        what: ceoloide/mcu_nice_nano
+        where:
+          ref: side_outer
+          shift: [-2, 29.7]
+          rotate: 0
+        params:
+          reversible: true
+          reverse_mount: true
+
+      # Battery connector (JST PH 2.0). v2 uses a 750 mAh 403450 cell
+      # (4 x 34 x 50 mm) — much larger than v1's. The cell sits below the PCB
+      # in a case cavity; only the JST connector lives on the board.
+      # 403450 keep-out for case design: 34 x 50 mm flat region + 4 mm Z.
+      battery:
+        what: ceoloide/battery_connector_jst_ph_2
+        where:
+          ref: matrix_middle_top
+          shift: [0 + 5, ky / 2 + (4.7)]
+          rotate: 270
+        params:
+          reversible: true
+
+      # nice!view display - per half. Anchored to the SAME ref+shift as the
+      # MCU so the display's 5-pin row sits dead-center over the nice!nano
+      # body. With rotate: 180 the display body extends back toward the keys
+      # (away from the USB-C end), keeping the screen visible above the matrix
+      # while pin holes drop straight down through the nano body's empty
+      # center strip.
+      # SPI nets: MOSI -> D6 (P6), SCK -> D7 (P7), CS -> D5 (P5).
+      # Picked to avoid v1's matrix GPIOs and the upstream nice_view_adapter
+      # default D1/D2/D3 (which would collide with col P1/P2/P3); D7 is free
+      # since we dropped the status LED.
+      display:
+        what: ceoloide/display_nice_view
+        where:
+          ref: side_outer
+          shift: [-2, 26]
+          rotate: 360
+        params:
+          reversible: true
+          MOSI: P6
+          SCK: P7
+          CS: P5
+          VCC: VCC
+          GND: GND
+
+      # Power switch - near XIAO, top left, rotated horizontal
+      power:
+        what: ceoloide/power_switch_smd_side
+        where:
+          ref: matrix_ring_top
+          shift: [2, ky + 2.2]
+          rotate: 90
+        params:
+          reversible: true
+          from: BAT_P
+          to: RAW
+
+      # Reset button - near XIAO, top left
+      reset:
+        what: ceoloide/reset_switch_smd_side
+        where:
+          ref: matrix_pinky_top
+          shift: [kx / 2, ky + 7.2]
+          rotate: 0
+        params:
+          reversible: true
+          from: GND
+          to: RST
+
+      # Big "DEFIANT" silkscreen spanning the board centerline. Overlap with
+      # switches is intentional and accepted.
+      board_name_big:
+        what: ceoloide/utility_text
+        where:
+          ref: matrix_middle_home
+          shift: [0, 0]
+        params:
+          text: "DEFIANT"
+          height: 14
+          width: 14
+          thickness: 1.5
+          reversible: true
+
+      # Original signature silkscreen (kept from v1, bumped version).
+      board_name:
+        what: ceoloide/utility_text
+        where:
+          ref: matrix_inner_top
+          shift: [-0.5 kx, ky - 3]
+        params:
+          text: "Defiant v2.0 By Invincent"
+          height: 2
+          width: 2
+          thickness: 0.3
+          reversible: true
+
+      # Ground fill on both sides
+      ground_fill:
+        what: ceoloide/utility_filled_zone
+        where:
+          ref: matrix_middle_home
+        params:
+          side: "F&B"
+          net: GND
+
+      # Mounting holes (M2)
+      mount_top_left:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_pinky_top
+          shift: [0, ky]
+
+      mount_top_right:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_inner_top
+          shift: [.3 kx, ky + 3]
+
+      mount_bottom_left:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_pinky_bottom
+          shift: [1.6 kx, -0.5 ky]
+
+      mount_bottom_right:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: matrix_inner_bottom
+          shift: [0.3 kx, -0.7 ky]
+
+      mount_side:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: side_outer
+          shift: [-6, -1.5 ky]
+
+      mount_thumb:
+        what: ceoloide/mounting_hole_plated
+        where:
+          ref: thumb_far_thumb
+          shift: [ 0.4 kx, -0.7 ky]

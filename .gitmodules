@@ -4,3 +4,9 @@
 [submodule "footprints/ImStuBTW"]
 	path = v1/footprints/ImStuBTW
 	url = https://github.com/ImStuBTW/ergogen-v4-footprints.git
+[submodule "v2/footprints/ceoloide"]
+	path = v2/footprints/ceoloide
+	url = https://github.com/ceoloide/ergogen-footprints.git
+[submodule "v2/footprints/ImStuBTW"]
+	path = v2/footprints/ImStuBTW
+	url = https://github.com/ImStuBTW/ergogen-v4-footprints.git

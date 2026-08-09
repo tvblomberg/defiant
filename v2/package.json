@@ -1,0 +1,17 @@
+{
+  "name": "defiant",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "ergogen . -o output",
+    "build:debug": "ergogen . -o output --debug",
+    "plate": "npm run build:debug && python3 generate_plate.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ergogen": "^4.2.1"
+  }
+}

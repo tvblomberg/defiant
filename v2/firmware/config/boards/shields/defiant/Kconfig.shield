@@ -1,0 +1,5 @@
+config SHIELD_DEFIANT_LEFT
+    def_bool $(shields_list_contains,defiant_left)
+
+config SHIELD_DEFIANT_RIGHT
+    def_bool $(shields_list_contains,defiant_right)
