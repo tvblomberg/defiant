@@ -8,5 +8,6 @@ manifest:
       revision: main
       import: app/west.yml
   self:
-    # Full path from the repo root, not just "config". See v1/firmware/config/west.yml.
-    path: v2/firmware/config
+    # Must match this directory's name and stay a direct child of the repo root.
+    # See config-v1/west.yml.
+    path: config-v2

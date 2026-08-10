@@ -1,0 +1,16 @@
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+  self:
+    # Must match this directory's name, and this directory must stay a direct
+    # child of the repo root. `west init -l <dir>` sets topdir to <dir>'s parent
+    # and ignores self.path entirely, while ZMK's build-user-config workflow runs
+    # `west update` from the repo root -- so nesting the config any deeper puts
+    # .west/ somewhere west update can't find it.
+    path: config-v1
