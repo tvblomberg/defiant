@@ -1,0 +1,18 @@
+name: Build v1
+
+# Kept in its own workflow file on purpose. ZMK's build-user-config uploads each
+# matrix job as `artifact-<board>-<shield>` and merges with `pattern: artifact-*`,
+# `delete-merged: true`. Artifacts are scoped to the workflow *run*, so calling the
+# reusable workflow twice in one file makes each merge sweep up the other revision's
+# firmware -- and the two settings_reset jobs collide outright.
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      # config_path must be a direct child of the repo root -- see config-v1/west.yml
+      config_path: config-v1
+      build_matrix_path: config-v1/build.yaml
+      archive_name: defiant-v1

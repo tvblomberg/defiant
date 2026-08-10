@@ -1,0 +1,14 @@
+name: Build v2
+
+# Separate from build-v1.yml so the two revisions get separate artifact
+# namespaces. See the comment in build-v1.yml.
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      config_path: config-v2
+      build_matrix_path: config-v2/build.yaml
+      archive_name: defiant-v2
